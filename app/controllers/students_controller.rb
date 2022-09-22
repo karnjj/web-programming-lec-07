@@ -1,5 +1,5 @@
 class StudentsController < ApplicationController
-  before_action :set_student, only: %i[ show edit update destroy ]
+  before_action :set_student, only: %i[ show edit edit_score update destroy ]
 
   # GET /students or /students.json
   def index
@@ -17,6 +17,22 @@ class StudentsController < ApplicationController
 
   # GET /students/1/edit
   def edit
+  end
+
+  # GET /students/1/edit_score
+  def edit_score
+    @scores = @student.scores
+    maxPoint = 0
+    sumPoint = 0
+    @maxSubject = ''
+    @scores.each do |e|
+      sumPoint += e.point
+      if e.point > maxPoint
+        maxPoint = e.point
+        @maxSubject = e.subject
+      end
+    end
+    @avgPoint = @scores.length() != 0 ? sumPoint / @scores.length() : 0
   end
 
   # POST /students or /students.json

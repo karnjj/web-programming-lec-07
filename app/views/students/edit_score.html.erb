@@ -1,0 +1,42 @@
+<h1>Editing student scores</h1>
+
+<div id="student-score">
+  <table style="width:100%;max-width:320px;border: 1px solid">
+      <tr>
+          <th>
+              Subject
+          </th>
+          <th>
+              point
+          </th>
+          <th>
+              action
+          </th>
+      </tr>
+    <% @scores.each do |score| %>
+      <tr>
+        <td style="text-align: center;">
+            <%= score.subject %>
+        </td>
+        <td style="text-align: center;">
+            <%= score.point %>
+        </td>
+        <td>
+          <%= link_to "Edit", edit_score_path(score) %>
+          <%= button_to "Delete", score, method: :delete, 
+          params: { turn_back: true }
+           %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+<br>
+
+<div>
+  <%= link_to "New score", new_score_path %>
+</div>
+
+<h4>ค่าเฉลี่ยของคะแนน <%= @avgPoint %></h4>
+<h4>ชื่อวิชาที่ได้คะแนนมากสุด <%= @maxSubject %></h4>

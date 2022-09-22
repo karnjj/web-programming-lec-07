@@ -50,10 +50,15 @@ class ScoresController < ApplicationController
   # DELETE /scores/1 or /scores/1.json
   def destroy
     @score.destroy
+    turn_back = params[:turn_back]
 
-    respond_to do |format|
-      format.html { redirect_to scores_url, notice: "Score was successfully destroyed." }
-      format.json { head :no_content }
+    if turn_back
+      redirect_to request.original_fullpath
+    else
+      respond_to do |format|
+        format.html { redirect_to scores_url, notice: "Score was successfully destroyed." }
+        format.json { head :no_content }
+      end
     end
   end
 
