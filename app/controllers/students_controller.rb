@@ -1,4 +1,5 @@
 class StudentsController < ApplicationController
+  before_action :must_be_logged_in, except: %i[ index edit_score ]
   before_action :set_student, only: %i[ show edit edit_score update destroy ]
 
   # GET /students or /students.json
@@ -36,6 +37,7 @@ class StudentsController < ApplicationController
     session[:prev_page] = 'edit_score_student'
     session[:student_id] = params[:id]
   end
+  helper_method :is_login?
 
   # POST /students or /students.json
   def create

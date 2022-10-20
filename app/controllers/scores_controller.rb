@@ -1,4 +1,5 @@
 class ScoresController < ApplicationController
+  before_action :must_be_logged_in
   before_action :set_score, only: %i[ show edit update destroy ]
 
   # GET /scores or /scores.json
@@ -42,7 +43,6 @@ class ScoresController < ApplicationController
 
   # PATCH/PUT /scores/1 or /scores/1.json
   def update
-    puts(session[:prev_page])
     respond_to do |format|
       if @score.update(score_params)
           if session[:prev_page] === "edit_score_student"

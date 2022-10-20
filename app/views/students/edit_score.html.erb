@@ -22,7 +22,9 @@
             <%= score.point %>
         </td>
         <td>
-          <%= link_to "Edit", edit_score_path(score) %>
+          <% if is_login? %>
+            <%= link_to "Edit", edit_score_path(score) %>
+          <% end %>
           <%= button_to "Delete", score, method: :delete, 
           params: { turn_back: true }
            %>
