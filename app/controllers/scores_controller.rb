@@ -4,6 +4,7 @@ class ScoresController < ApplicationController
   # GET /scores or /scores.json
   def index
     @scores = Score.all
+    session[:prev_page] = 'index_score'
   end
 
   # GET /scores/1 or /scores/1.json
@@ -22,11 +23,16 @@ class ScoresController < ApplicationController
   # POST /scores or /scores.json
   def create
     @score = Score.new(score_params)
-
     respond_to do |format|
       if @score.save
-        format.html { redirect_to score_url(@score), notice: "Score was successfully created." }
-        format.json { render :show, status: :created, location: @score }
+        if session[:prev_page] === "edit_score_student"
+          format.html do
+            redirect_to edit_score_student_path({id: session[:student_id]})
+          end
+        else
+          format.html { redirect_to score_url(@score), notice: "Score was successfully created." }
+          format.json { render :show, status: :created, location: @score }
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @score.errors, status: :unprocessable_entity }
@@ -36,10 +42,17 @@ class ScoresController < ApplicationController
 
   # PATCH/PUT /scores/1 or /scores/1.json
   def update
+    puts(session[:prev_page])
     respond_to do |format|
       if @score.update(score_params)
-        format.html { redirect_to score_url(@score), notice: "Score was successfully updated." }
-        format.json { render :show, status: :ok, location: @score }
+          if session[:prev_page] === "edit_score_student"
+            format.html do
+              redirect_to edit_score_student_path({id: session[:student_id]})
+            end
+          else
+            format.html { redirect_to score_url(@score), notice: "Score was successfully updated." }
+            format.json { render :show, status: :ok, location: @score }
+          end
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @score.errors, status: :unprocessable_entity }
@@ -50,10 +63,9 @@ class ScoresController < ApplicationController
   # DELETE /scores/1 or /scores/1.json
   def destroy
     @score.destroy
-    turn_back = params[:turn_back]
-
-    if turn_back
-      redirect_to request.original_fullpath
+    
+    if session[:prev_page] === "edit_score_student"
+      redirect_to edit_score_student_path({id: session[:student_id]})
     else
       respond_to do |format|
         format.html { redirect_to scores_url, notice: "Score was successfully destroyed." }

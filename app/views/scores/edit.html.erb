@@ -6,5 +6,9 @@
 
 <div>
   <%= link_to "Show this score", @score %> |
-  <%= link_to "Back to scores", scores_path %>
+  <% if session[:prev_page] === 'index_score'%>
+    <%= link_to "Back to scores", scores_path %>
+  <% else %>
+    <%= link_to "Back to student scores", edit_score_student_path({id: session[:student_id]}) %>
+  <% end %>
 </div>

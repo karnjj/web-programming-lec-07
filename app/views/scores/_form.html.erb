@@ -27,8 +27,12 @@
   </div>
 
   <div>
-    <%= form.label :student_id, style: "display: block" %>
-    <%= form.text_field :student_id %>
+    <% if session[:prev_page] === 'index_score'%>
+      <%= form.label :student_id, style: "display: block" %>
+      <%= form.text_field :student_id %>
+    <% else %>
+      <%= form.hidden_field :student_id, :value => session[:student_id] %>
+    <% end %>
   </div>
 
   <div>

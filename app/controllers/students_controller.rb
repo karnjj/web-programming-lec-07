@@ -33,6 +33,8 @@ class StudentsController < ApplicationController
       end
     end
     @avgPoint = @scores.length() != 0 ? sumPoint / @scores.length() : 0
+    session[:prev_page] = 'edit_score_student'
+    session[:student_id] = params[:id]
   end
 
   # POST /students or /students.json
